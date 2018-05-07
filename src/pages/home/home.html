@@ -1,14 +1,81 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Tâches
     </ion-title>
+    <ion-buttons end>
+      <span class="tasksNb">
+        {{ tasks.length }}
+      </span>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+
+  <div padding *ngIf="tasks.length === 0">
+    <h5 text-center>
+      Aucune tâche pour le moment
+    </h5>
+  </div>
+
+  <ion-list>
+
+    <!-- Ma liste de tâches -->
+    <ion-item-sliding *ngFor="let task of tasks">
+      <ion-item>
+        <ion-label>{{ task.title }}</ion-label>
+        <ion-checkbox
+          [(ngModel)]="task.status"
+          [class.done]="task.status"
+          [checked]="task.status"
+          (ionChange)="saveOurTasks()">
+        </ion-checkbox>
+
+        <ion-note *ngIf="task.duedate"
+          class="todo-note" item-end>
+          <span>&Eacute;chéance</span><br>
+          {{ task.duedate | moment }}
+        </ion-note>
+
+      </ion-item>
+
+      <ion-item-options side="right"
+        (ionSwipe)="deleteTask(task)">
+        <button ion-button color="danger"
+          expandable (click)="deleteTask(task)">
+          Supprimer
+        </button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+
+    <!-- Ajouter une tâche -->
+    <ion-item *ngIf="active">
+      <ion-input type="text"
+        placeholder="Ajouter une tâche"
+        [(ngModel)]="task.title"
+        (ionBlur)="saveTask()"
+        (keypress)="enterSave($event.keyCode)">
+      </ion-input>
+      <button class="todo-calendar"
+        ion-button item-left clear
+        (click)="picker.open()">
+        <ion-icon name="calendar"></ion-icon>
+        <ion-datetime #picker
+          displayFormat="DD/MM/YYYY"
+          placeholder="JJ/MM/AAAA"
+          [(ngModel)]="task.duedate"
+          doneText="Confirmer"
+          cancelText="Annuler"
+          min="{{ date.toISOString() }}"
+          max="{{ (date.getFullYear() + 10) }}">
+        </ion-datetime>
+      </button>
+    </ion-item>
+
+  </ion-list>
+
+  <!--{{ task | json }}-->
+
 </ion-content>

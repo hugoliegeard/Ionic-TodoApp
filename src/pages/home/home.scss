@@ -1,3 +1,39 @@
 page-home {
 
+  $done-color: grey;
+
+  .done + .item-inner > .input-wrapper {
+    color: $done-color;
+    text-decoration: line-through;
+  }
+
+  .tasksNb {
+    font-size: 2em;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .todo-calendar {
+    ion-icon {
+      font-size: 2em;
+      color: darken($done-color, 8%);
+    }
+  }
+
+  /* Règle le bogue du calendrier sur Android */
+  .input-cover { position:static; }
+
+  .todo-note {
+    font-size: 0.9em;
+    span {
+      font-size: 0.8em;
+    }
+  }
+
+  ion-item-sliding {
+    ion-label {
+      white-space: normal;
+    }
+  }
+
 }
